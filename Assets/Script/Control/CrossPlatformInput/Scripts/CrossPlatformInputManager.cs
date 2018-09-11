@@ -203,9 +203,9 @@ namespace fl
 			}
 
 
-			public VirtualAxis(string name, bool matchToInputSettings)
+			public VirtualAxis(string _name, bool matchToInputSettings)
 			{
-				name = name;
+				name = _name;
 				matchWithInputManager = matchToInputSettings;
 			}
 
@@ -255,9 +255,9 @@ namespace fl
 			}
 
 
-			public VirtualButton(string name, bool matchToInputSettings)
+			public VirtualButton(string _name, bool matchToInputSettings)
 			{
-				name = name;
+				name = _name;
 				matchWithInputManager = matchToInputSettings;
 			}
 

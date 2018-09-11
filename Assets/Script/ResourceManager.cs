@@ -5,10 +5,9 @@ namespace fl
     public class ResourceManager : MonoBehaviour
     {
         public static ResourceManager Instance;
-
         public GameObject[] prefabs;
 
-        private void Start()
+        private void Awake()
         {
             Instance = this;
         }

@@ -290,10 +290,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="FarLight.Plugins.csproj">
-      <Project>{CA212F2D-05BA-F7CB-CFD8-F36C110540B1}</Project>
-      <Name>FarLight.Plugins</Name>
-    </ProjectReference>
     <ProjectReference Include="UnityEditor.StandardEvents.csproj">
       <Project>{6800202F-4402-D405-F8CB-03DC7BD78B92}</Project>
       <Name>UnityEditor.StandardEvents</Name>
@@ -304,27 +300,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\__core\unit\unit.cs" />
-    <Compile Include="Assets\__core\unit\unit_component.cs" />
-    <Compile Include="Assets\__core\unit\unit_controller.cs" />
-    <Compile Include="Assets\__core\unit\unit_identify.cs" />
-    <Compile Include="Assets\__core\unit_spaceship\component\unit_spaceship_component.cs" />
-    <Compile Include="Assets\__core\unit_spaceship\component\unit_spaceship_component_engine.cs" />
-    <Compile Include="Assets\__core\unit_spaceship\component\unit_spaceship_component_injectors.cs" />
-    <Compile Include="Assets\__core\unit_spaceship\controller\unit_spaceship_controller.cs" />
-    <Compile Include="Assets\__core\unit_spaceship\controller\unit_spaceship_controller_camera.cs" />
-    <Compile Include="Assets\__core\unit_spaceship\controller\unit_spaceship_controller_input.cs" />
-    <Compile Include="Assets\__core\unit_spaceship\controller\unit_spaceship_controller_input_player.cs" />
-    <Compile Include="Assets\__core\unit_spaceship\unit_spaceship.cs" />
-    <Compile Include="Assets\Aircraft\Scripts\AeroplaneAiControl.cs" />
-    <Compile Include="Assets\Aircraft\Scripts\AeroplaneAudio.cs" />
-    <Compile Include="Assets\Aircraft\Scripts\AeroplaneController.cs" />
-    <Compile Include="Assets\Aircraft\Scripts\AeroplaneControlSurfaceAnimator.cs" />
-    <Compile Include="Assets\Aircraft\Scripts\AeroplanePropellerAnimator.cs" />
-    <Compile Include="Assets\Aircraft\Scripts\AeroplaneUserControl2Axis.cs" />
-    <Compile Include="Assets\Aircraft\Scripts\AeroplaneUserControl4Axis.cs" />
-    <Compile Include="Assets\Aircraft\Scripts\JetParticleEffect.cs" />
-    <Compile Include="Assets\Aircraft\Scripts\LandingGear.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />
@@ -370,7 +345,10 @@
     <Compile Include="Assets\PostProcessing\Runtime\Utils\MaterialFactory.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Utils\RenderTextureFactory.cs" />
     <Compile Include="Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs" />
-    <Compile Include="Assets\Script\CameraShip.cs" />
+    <Compile Include="Assets\Script\Audio\ShipAudio.cs" />
+    <Compile Include="Assets\Script\Camera\CameraShip.cs" />
+    <Compile Include="Assets\Script\Camera\CameraSwitching.cs" />
+    <Compile Include="Assets\Script\Camera\CockpitCamera.cs" />
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\ButtonHandler.cs" />
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
@@ -382,23 +360,26 @@
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\TiltInput.cs" />
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\TouchPad.cs" />
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\VirtualInput.cs" />
-    <Compile Include="Assets\Script\EmissionControl.cs" />
-    <Compile Include="Assets\Script\FPSDisplay.cs" />
-    <Compile Include="Assets\Script\FreeCamera.cs" />
+    <Compile Include="Assets\Script\Control\ShipController.cs" />
+    <Compile Include="Assets\Script\Control\ShipUserControl2Axis.cs" />
+    <Compile Include="Assets\Script\Control\ShipUserControl4Axis.cs" />
     <Compile Include="Assets\Script\Game.cs" />
-    <Compile Include="Assets\Script\JetParticle.cs" />
+    <Compile Include="Assets\Script\Hud\CheckDoButton.cs" />
+    <Compile Include="Assets\Script\Hud\FPSDisplay.cs" />
+    <Compile Include="Assets\Script\Hud\GameScreen.cs" />
+    <Compile Include="Assets\Script\Hud\HudManager.cs" />
+    <Compile Include="Assets\Script\Hud\LimiterOfLeverScreen.cs" />
+    <Compile Include="Assets\Script\Hud\ShipButton.cs" />
+    <Compile Include="Assets\Script\Hud\SpeedVector.cs" />
+    <Compile Include="Assets\Script\Particle\JetParticle.cs" />
+    <Compile Include="Assets\Script\Planet\FieldAsteroids.cs" />
+    <Compile Include="Assets\Script\Planet\RotatePlanet.cs" />
     <Compile Include="Assets\Script\ResourceManager.cs" />
-    <Compile Include="Assets\Script\RotatePlanet.cs" />
-    <Compile Include="Assets\Script\Ship.cs" />
-    <Compile Include="Assets\Script\ShipAudio.cs" />
-    <Compile Include="Assets\Script\ShipController.cs" />
-    <Compile Include="Assets\Script\ShipUserControl4Axis.cs" />
-    <Compile Include="Assets\Script\SpeedVector.cs" />
     <Compile Include="Assets\Script\System\ExchangeTool.cs" />
     <Compile Include="Assets\Script\System\Reactor.cs" />
+    <Compile Include="Assets\Script\System\Ship.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Aircraft\AircraftGuidelines.txt" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\HistogramCompute.compute" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\HistogramRender.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\ParadeRender.shader" />
@@ -443,73 +424,6 @@
     <None Include="Assets\Shaders\ComboEarth.shader" />
     <None Include="Assets\Shaders\Earth.shader" />
     <None Include="Assets\Shaders\Otmosphere.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlurDX11.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ChromaticAberrationShader.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrection3DLut.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurves.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurvesSimple.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionSelective.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Adaptation.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Apply.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Luminance.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\MinMaxReduction.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ContrastComposite.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ConvertDepth.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CreaseApply.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\EdgeDetectNormals.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\FisheyeShader.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GlobalFog.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GrayscaleEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\MotionBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\MotionBlurClear.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrain.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrainDX11.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderYUV.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\PrepareSunShaftsBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\RadialBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SSAOShader.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ScreenSpaceAmbientObscurance.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ScreenSpaceRaytrace.cginc" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SepiaToneEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ShowAlphaChannel.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SimpleClear.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SunShaftsComposite.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\TwirlEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\VignettingShader.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\VortexEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\DLAA.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA2.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA3Console.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset2.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset3.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\NFAA.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\SSAA.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\Blend.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendForBloom.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter2.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\LensFlareCreate.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBloom.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MultiPassHollywoodFlares.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\VignetteShader.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\Bokeh34.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfField34.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
     <None Include="C:\Users\Администратор\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.8.8\Editor\Resources\Styles\Main_Dark.uss" />
     <None Include="C:\Users\Администратор\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.8.8\Editor\Resources\Styles\Main_Light.uss" />
     <None Include="C:\Users\Администратор\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.8.8\Editor\Resources\Templates\Alert.uxml" />

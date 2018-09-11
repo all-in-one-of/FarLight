@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +12,7 @@ public class Reactor : MonoBehaviour {
 
     public Text state;
 
-    void Awake()
+    private void Awake()
     {
         DamageSituation = "normal";
         //TryLaunchingReactor();
