@@ -34,6 +34,8 @@ namespace fl
         public float RightInput { get; private set; }
         public float UpInput { get; private set; }
 
+        [SerializeField] private float LossControlSpeed = 200f;
+
         //public float m_AeroFactor = 1f;
 
         [HideInInspector] public Vector3 InvertdirectionVelocity;
@@ -70,6 +72,8 @@ namespace fl
         public Transform cameraShip;
         [HideInInspector] public CameraShip cs;
 
+        Transform CenterOfMassObject; // TO DO
+
         private void Awake()
         {
             m_Rigidbody = GetComponent<Rigidbody>();
@@ -89,6 +93,9 @@ namespace fl
                 m_Et[index] = tool.GetComponent<ExchangeTool>();
                 index++;
             }
+
+            CenterOfMassObject = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform; // TO DO
+            CenterOfMassObject.GetComponent<SphereCollider>().enabled = false; // TO DO
         }
 
         public void Attack(bool attackRight, bool attackLeft)
@@ -102,6 +109,7 @@ namespace fl
             }
         }
 
+        public Vector3 centerOfMass;
 
         public void Move(float rollInput, float pitchInput, float yawInput, float throttleInput, float rightInput, float upInput)
         {
@@ -114,6 +122,9 @@ namespace fl
             PitchInput = Mathf.Clamp(pitchInput, -1, 1);
             YawInput = Mathf.Clamp(yawInput, -1, 1);
 
+            m_Rigidbody.centerOfMass = centerOfMass; // TO DO
+            CenterOfMassObject.position = centerOfMass; // TO DO
+            //CenterOfMassObject.localScale = new Vector3(10f, 10f, 10f);
 
             CalculateForwardSpeed();
 
@@ -142,7 +153,15 @@ namespace fl
             // Пространственное торможение.
             m_Rigidbody.drag = 1 /*+ m_OriginalDrag*/ + extraDrag;
             // Угловое торможение.
-            m_Rigidbody.angularDrag = 1 + /*m_OriginalAngularDrag **/ ForwardSpeed * m_AngularDragFactor; // В конце коэфф
+
+            if (absoluteSpeed > LossControlSpeed) // TO DO
+            {
+                m_Rigidbody.angularDrag = 1 + /*m_OriginalAngularDrag **/ ForwardSpeed * m_AngularDragFactor; // В конце коэфф
+            }
+            else
+            {
+                m_Rigidbody.angularDrag = 1;
+            }
         }
 
         private void CalculateForwardSpeed()
@@ -174,14 +193,16 @@ namespace fl
             m_Rigidbody.AddForce(forces);
         }
 
+        //public Vector3 torqueMy;
+
         private void CalculateTorque()
         {
             var torque = Vector3.zero;
             torque += PitchInput * m_PitchEffect * transform.right;
-            torque += YawInput * m_YawEffect * transform.up;
+            torque += - YawInput * m_YawEffect * transform.up;
             torque += RollInput * m_RollEffect * transform.forward;
-            //torque += m_BankedTurnAmount * m_BankedTurnEffect * transform.up;
-            //m_Rigidbody.AddTorque(torque * ForwardSpeed * m_AeroFactor);
+
+            //torque = torqueMy;
             m_Rigidbody.AddTorque(torque/* * ForwardSpeed*/);
         }
 

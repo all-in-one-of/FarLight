@@ -4,15 +4,19 @@ namespace fl
 {
     public class ResourceManager : MonoBehaviour
     {
-        public static ResourceManager Instance;
         public GameObject[] prefabs;
 
+        public static ResourceManager Instance;
         private void Awake()
         {
             Instance = this;
         }
+        public static ResourceManager GetInstance()
+        {
+            return Instance;
+        }
 
-        public static GameObject GetPrefab(string name)
+        public GameObject GetPrefab(string name)
         {
             return Get(name + " (UnityEngine.GameObject)", Instance.prefabs);
         }

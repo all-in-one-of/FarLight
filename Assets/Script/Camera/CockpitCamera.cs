@@ -27,11 +27,15 @@ namespace fl
             m_ScrollPosition = standartFieldOfView;
             m_Yaw = transform.localRotation.eulerAngles.y;
             m_Pitch = transform.localRotation.eulerAngles.x;
-            m_Sc = GetComponent<CameraShip>().ship.GetComponent<ShipController>(); // ?! TO DO
+            m_Sc = GetComponent<CameraShip>().ship.GetComponent<ShipController>(); // ?! TO DO 
+        }
+
+        private void Start()
+        {
             hudM = HudManager.GetInstance();
         }
 
-        // Режим полёта.
+        // Забираем управление.
         void CaptureInput()
         {
             Cursor.visible = false;
@@ -41,7 +45,7 @@ namespace fl
             m_Sc.Blockage = true;
         }
 
-        // Режим изучения.
+        // Возращаем управление.
         public void ReleaseInput()
         {
             m_Yaw = transform.localRotation.eulerAngles.y;

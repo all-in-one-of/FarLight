@@ -62,7 +62,7 @@ namespace fl
         }
         public IEnumerator FinishShaking()
         {
-            // 6 секунд.
+            //// 6 секунд.
             shakingPower = 0.2f;
             velocityTo = 0.1F;
 
@@ -74,7 +74,7 @@ namespace fl
             }
         }
 
-        // Камера "не успевает" за объектом при больших скоростях потому что fixedupdate. TO DO
+        // Камера "не успевает" за объектом при больших скоростях потому что fixedupdate. TO DO.
         public void SmoothFollow()
         {
             Vector3 curPos = Vector3.SmoothDamp(_camera.transform.position, ship.position + (_camera.transform.rotation * defaultDistance), ref velocity, smoothrate);
@@ -83,6 +83,7 @@ namespace fl
             _camera.transform.rotation = ship.rotation;
         }
 
+        // Обычное точное следование, которое выполняется в Update.
         public void Follow()
         {
             _camera.transform.position = ship.position;

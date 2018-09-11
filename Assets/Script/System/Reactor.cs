@@ -8,7 +8,7 @@ public class Reactor : MonoBehaviour {
     public bool isReactorRunning = false;
     public string DamageSituation { get; set; }
 
-    private bool RestartLaunching = false;
+    //private bool RestartLaunching = false;
 
     public Text state;
 
@@ -34,7 +34,7 @@ public class Reactor : MonoBehaviour {
     // Попытка запустить реактор.
     public void TryLaunchingReactor()
     {
-        RestartLaunching = false;
+        //RestartLaunching = false;
         // Если реактор запущен или разрушен.
         if (isReactorRunning)
         {
@@ -87,7 +87,7 @@ public class Reactor : MonoBehaviour {
     {
         LogReactor("Сбой запуска реактора. Перезапуск через " + deley + " секунды.");
         yield return new WaitForSecondsRealtime(deley);
-        RestartLaunching = true;
+        //RestartLaunching = true;
         TryLaunchingReactor();
     }
 

@@ -15,20 +15,27 @@ namespace fl
         private void Awake()
         {
             m_Gs = GetComponent<GameScreen>();
+        }
+
+        // HudManager инициализируется в Awake. Поключаться ко всем менеджерам нужно в Start.
+        private void Start()
+        {
             hudM = HudManager.GetInstance();
         }
 
         private void Update()
         {
             m_EllipsePoint = PositionEllipse(m_Gs.ellipseConstraints.x, m_Gs.ellipseConstraints.y, m_Gs.mouseDeflection.x, m_Gs.mouseDeflection.y);
-        
+
             if (m_EllipsePoint.magnitude > m_Gs.mouseDeflection.magnitude)
             {
                 hudM.pointHudPosition = Input.mousePosition;
+                //print(Input.mousePosition);
             }
             else
             {
                 hudM.pointHudPosition = m_EllipsePoint + m_Gs.screenCenter;
+                //print(m_EllipsePoint + m_Gs.screenCenter);
             }
         }
          

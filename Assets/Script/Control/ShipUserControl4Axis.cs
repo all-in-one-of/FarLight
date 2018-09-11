@@ -23,8 +23,6 @@ namespace fl
 
         private void FixedUpdate()
         {
-            m_Right = CrossPlatformInputManager.GetAxis("Horizontal");
-            m_Pitch = CrossPlatformInputManager.GetAxis("Vertical");
             m_AttackRight = Input.GetMouseButton(0);
             m_AttackLeft = Input.GetMouseButton(1);
 
@@ -36,11 +34,22 @@ namespace fl
             // Вращение.
             m_Roll = (Input.GetKey(KeyCode.Q) ? 1f : 0f) - (Input.GetKey(KeyCode.E) ? 1f : 0f);
 
+            // Влево и вправо. 
+            m_Right = CrossPlatformInputManager.GetAxis("Horizontal");
+
             // Вверх и вниз. Вынести в настройки. TO DO
             m_Up = (Input.GetKey(KeyCode.Space) ? 1f : 0f) - (Input.GetKey(KeyCode.LeftAlt) ? 1f : 0f);
 
             // Вперёд и назад. Вынести в настройки. TO DO
             m_Throttle = (Input.GetKey(KeyCode.LeftShift) ? 1f : 0f) - (Input.GetKey(KeyCode.Z) ? 1f : 0f);
+
+            // Рыскание.
+            m_Yaw = Screen.width / 2 - Input.mousePosition.x; // Изменить. TO DO.
+
+            // Подъем.
+            m_Pitch = Screen.height / 2 - Input.mousePosition.y; // Изменить. TO DO.
+
+            print(m_Yaw + " " + m_Pitch);
 
             m_Ship.Move(m_Roll, m_Pitch, m_Yaw, m_Throttle, m_Right, m_Up);
             m_Ship.Attack(m_AttackRight, m_AttackLeft);
