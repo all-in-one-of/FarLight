@@ -4,39 +4,36 @@ using UnityEngine;
 
 namespace fl
 {
-    public class LimiterOfLeverScreen : MonoBehaviour
+    public class BoundingOval : MonoBehaviour
     {
 
-        private GameScreen m_Gs;
         private Vector2 m_EllipsePoint;
-        private Vector3 m_NormalPosition;
+        private Vector2 m_NormalPosition;
         private HudManager hudM;
-
-        private void Awake()
-        {
-            m_Gs = GetComponent<GameScreen>();
-        }
+        private GameScreenManager m_GameSM;
 
         // HudManager инициализируется в Awake. Поключаться ко всем менеджерам нужно в Start.
         private void Start()
         {
             hudM = HudManager.GetInstance();
+            m_GameSM = GameScreenManager.GetInstance();
         }
 
         private void Update()
         {
-            m_EllipsePoint = PositionEllipse(m_Gs.ellipseConstraints.x, m_Gs.ellipseConstraints.y, m_Gs.mouseDeflection.x, m_Gs.mouseDeflection.y);
+            m_EllipsePoint = PositionEllipse(m_GameSM.ellipseRadius.x, m_GameSM.ellipseRadius.y, m_GameSM.mouseDeflection.x, m_GameSM.mouseDeflection.y);
 
-            if (m_EllipsePoint.magnitude > m_Gs.mouseDeflection.magnitude)
+            if (m_EllipsePoint.magnitude > m_GameSM.mouseDeflection.magnitude)
             {
-                hudM.pointHudPosition = Input.mousePosition;
-                //print(Input.mousePosition);
+                m_NormalPosition = Input.mousePosition;
             }
             else
             {
-                hudM.pointHudPosition = m_EllipsePoint + m_Gs.screenCenter;
-                //print(m_EllipsePoint + m_Gs.screenCenter);
+                m_NormalPosition = m_EllipsePoint + m_GameSM.screenCenter;
             }
+
+            hudM.pointHudPosition = m_NormalPosition;
+            m_GameSM.ellipseConstraints = m_NormalPosition - m_GameSM.screenCenter;
         }
          
         private Vector2 PositionEllipse(float r1, float r2, float x, float y)

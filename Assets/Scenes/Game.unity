@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.021783592, g: 0.108550675, b: 0.14281046, a: 1}
+  m_IndirectSpecularColor: {r: 0.021522671, g: 0.10827451, b: 0.14266348, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5432,7 +5432,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &273267807
 Transform:
   m_ObjectHideFlags: 0
@@ -12289,6 +12289,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 1661574943168558, guid: cb72e0abc08d3c243ae8649406bfc220, type: 2}
+  - {fileID: 1023484986743480, guid: dd7a705ff8855bf4b8b469619df7ce9a, type: 2}
+  - {fileID: 1520216650128556, guid: 7252e6c97deb75c4dbd7a4efbb28f2a4, type: 2}
 --- !u!114 &919803721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12303,7 +12305,8 @@ MonoBehaviour:
   resolution: {x: 0, y: 0}
   screenCenter: {x: 0, y: 0}
   mouseDeflection: {x: 0, y: 0}
-  ellipseConstraints: {x: 0, y: 0}
+  ellipseRadius: {x: 0, y: 0}
+  ellipseConstraints: {x: 0, y: 0, z: 0}
 --- !u!114 &919803722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19350,7 +19353,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1631285803
 Transform:
   m_ObjectHideFlags: 0
@@ -20283,14 +20286,16 @@ MonoBehaviour:
   m_MaxEnginePower: 10
   m_MaxWarpEnginePower: 1000
   m_ThrottleChangeSpeed: 0.3
-  m_RollEffect: 0.5
+  m_RollEffect: 1
+  m_DirectedRollEffect: 0.7
   m_RightEffect: 1
-  m_UpEffect: 0.5
-  m_PitchEffect: 0.3
-  m_YawEffect: 0.2
+  m_UpEffect: 1
+  m_PitchEffect: 0.002
+  m_YawEffect: 0.001
   m_DragFactor: 0.01
   m_AngularDragFactor: 0.14
   EnginePower: 0
+  LossControlSpeed: 200
   InvertdirectionVelocity: {x: 0, y: 0, z: 0}
   directionVelocity: {x: 0, y: 0, z: 0}
   absoluteSpeed: 0
@@ -20309,7 +20314,7 @@ MonoBehaviour:
   nebula: {fileID: 0}
   cameraShip: {fileID: 282840814}
   cs: {fileID: 0}
-  centerOfMass: {x: 0, y: -6.79, z: 27}
+  centerOfMass: {x: 0, y: -7.3, z: 27}
 --- !u!114 &1890761670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20329,7 +20334,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1890761666}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a07e85b46b2f374584c2b4822dbc3dd, type: 3}
   m_Name: 
@@ -20372,7 +20377,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1890761666}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!114 &1890761674
 MonoBehaviour:
   m_ObjectHideFlags: 0

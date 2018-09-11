@@ -13,11 +13,11 @@ namespace fl
         [SerializeField] private float m_ThrottleChangeSpeed = 0.3f;                // Скорость изменения дроссельной заслонки.
 
         [SerializeField] private float m_RollEffect = 0.2f;                         // The strength of effect for roll input.
+        [SerializeField] private float m_DirectedRollEffect = 0.7f;
         [SerializeField] private float m_RightEffect = 0.2f;
         [SerializeField] private float m_UpEffect = 0.2f;
         [SerializeField] private float m_PitchEffect = 0.2f;                        // The strength of effect for pitch input.
         [SerializeField] private float m_YawEffect = 0.2f;                          // The strength of effect for yaw input.
-        //[SerializeField] private float m_BankedTurnEffect = 0.5f;                   // Количество оборотов от поворота в сторону.
         [SerializeField] private float m_DragFactor = 0.001f;               // how much drag should increase with speed.
         [SerializeField] private float m_AngularDragFactor = 0.25f;               // how much drag should increase with speed.
 
@@ -36,25 +36,13 @@ namespace fl
 
         [SerializeField] private float LossControlSpeed = 200f;
 
-        //public float m_AeroFactor = 1f;
-
         [HideInInspector] public Vector3 InvertdirectionVelocity;
         [HideInInspector] public Vector3 directionVelocity;
         [HideInInspector] public float absoluteSpeed;
         public float speedWreckageFactor = 0.1f;
         public float speedNebulaFactor = 0.3f;
 
-        //private float m_Throttle;
-        //private float m_Yaw;
-        //private float m_Roll;
-        //private float m_Pitch;
-
-        //private float m_OriginalDrag;         // The drag when the scene starts.
-        //private float m_OriginalAngularDrag;  // The angular drag when the scene starts.
-
-        //private bool m_AutoBrake = true;
         private bool m_WarpActive = false;
-        //private float m_BankedTurnAmount;
         private Rigidbody m_Rigidbody;
 
         public Transform[] exchangeToolTransform;
@@ -78,24 +66,28 @@ namespace fl
         {
             m_Rigidbody = GetComponent<Rigidbody>();
             cs = cameraShip.GetComponent<CameraShip>();
-
-            //m_OriginalDrag = m_Rigidbody.drag;
-            //m_OriginalAngularDrag = m_Rigidbody.angularDrag;
-
             wreckage = wreckageParticals.GetComponent<ParticleSystem>();
             nebula = nebulaParticals.GetComponent<ParticleSystem>();
 
             m_Et = new ExchangeTool[exchangeToolTransform.Length];
 
             int index = 0;
-            foreach(var tool in exchangeToolTransform)
+            foreach (var tool in exchangeToolTransform)
             {
                 m_Et[index] = tool.GetComponent<ExchangeTool>();
                 index++;
             }
+        }
 
-            CenterOfMassObject = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform; // TO DO
-            CenterOfMassObject.GetComponent<SphereCollider>().enabled = false; // TO DO
+        //ResourceManager resM; // TO DO
+        public Vector3 centerOfMass = new Vector3(0f, -7.3f, 27f); // TO DO
+
+        void Start()
+        {
+        //    resM = ResourceManager.GetInstance();
+        //    CenterOfMassObject = Instantiate(resM.GetPrefab("CenterOfMass")).transform; // TO DO
+        //    CenterOfMassObject.position = centerOfMass; // TO DO
+            m_Rigidbody.centerOfMass = centerOfMass; // TO DO
         }
 
         public void Attack(bool attackRight, bool attackLeft)
@@ -109,8 +101,6 @@ namespace fl
             }
         }
 
-        public Vector3 centerOfMass;
-
         public void Move(float rollInput, float pitchInput, float yawInput, float throttleInput, float rightInput, float upInput)
         {
             RollInput = Mathf.Clamp(rollInput, -1, 1);
@@ -119,12 +109,8 @@ namespace fl
             UpInput = Mathf.Clamp(upInput, -1, 1);
 
             // Убрать для кручения и сделать более точно.
-            PitchInput = Mathf.Clamp(pitchInput, -1, 1);
-            YawInput = Mathf.Clamp(yawInput, -1, 1);
-
-            m_Rigidbody.centerOfMass = centerOfMass; // TO DO
-            CenterOfMassObject.position = centerOfMass; // TO DO
-            //CenterOfMassObject.localScale = new Vector3(10f, 10f, 10f);
+            PitchInput = pitchInput;
+            YawInput = yawInput;
 
             CalculateForwardSpeed();
 
@@ -149,18 +135,17 @@ namespace fl
 
         private void CalculateDrag()
         {
-            float extraDrag = m_Rigidbody.velocity.magnitude * m_DragFactor;
             // Пространственное торможение.
-            m_Rigidbody.drag = 1 /*+ m_OriginalDrag*/ + extraDrag;
-            // Угловое торможение.
+            m_Rigidbody.drag = 1 + m_Rigidbody.velocity.magnitude * m_DragFactor;
 
+            // Угловое торможение.
             if (absoluteSpeed > LossControlSpeed) // TO DO
             {
-                m_Rigidbody.angularDrag = 1 + /*m_OriginalAngularDrag **/ ForwardSpeed * m_AngularDragFactor; // В конце коэфф
+                m_Rigidbody.angularDrag = 1 + /*m_OriginalAngularDrag **/ ForwardSpeed * m_AngularDragFactor; // В конце коэфф // TO DO
             }
-            else
+            else // TO DO
             {
-                m_Rigidbody.angularDrag = 1;
+                m_Rigidbody.angularDrag = 1; // TO DO
             }
         }
 
@@ -198,12 +183,26 @@ namespace fl
         private void CalculateTorque()
         {
             var torque = Vector3.zero;
-            torque += PitchInput * m_PitchEffect * transform.right;
-            torque += - YawInput * m_YawEffect * transform.up;
+            torque -= PitchInput * m_PitchEffect * transform.right;
+
+            float Yaw = YawInput * m_YawEffect;
+            float DirectedRoll = m_DirectedRollEffect * Yaw;
+
+            if (Yaw < 0)
+            {
+                torque += Yaw * transform.up + (- DirectedRoll * transform.forward);
+            }
+            else
+            {
+                torque += Yaw * transform.up - DirectedRoll * transform.forward;
+            }
+
             torque += RollInput * m_RollEffect * transform.forward;
 
             //torque = torqueMy;
             m_Rigidbody.AddTorque(torque/* * ForwardSpeed*/);
+
+            //print(m_WarpActive);
         }
 
         float SaveMaxEnginePower;
