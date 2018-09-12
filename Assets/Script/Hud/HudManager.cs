@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace fl
 {
@@ -11,6 +12,10 @@ namespace fl
     public class HudManager : MonoBehaviour
     {
         public Transform pointHud;
+        public Text speedText;
+        public Text exchangeSpeedText;
+        public Text powerText;
+
         [HideInInspector] public Vector3 pointHudPosition;
 
         // Блокировка управления кораблём посредством мыши (режим "исследователя" в кабине)
@@ -18,10 +23,17 @@ namespace fl
 
         // ... 
 
+        [HideInInspector] public string speedIndicatorText;
+        [HideInInspector] public string exchangeSpeedIndicatorText;
+        [HideInInspector] public string powerIndicatorText;
+
 
         private void Update()
         {
             pointHud.position = Vector3.Lerp(pointHud.position, pointHudPosition, Time.deltaTime * 10);
+            speedText.text = speedIndicatorText;
+            exchangeSpeedText.text = exchangeSpeedIndicatorText;
+            powerText.text = powerIndicatorText;
         }
 
         private static HudManager Instance;

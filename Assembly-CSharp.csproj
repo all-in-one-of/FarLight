@@ -102,6 +102,7 @@
      <Compile Include="Assets\Script\Camera\CameraShip.cs" />
      <Compile Include="Assets\Script\Camera\CameraSwitching.cs" />
      <Compile Include="Assets\Script\Camera\CockpitCamera.cs" />
+     <Compile Include="Assets\Script\Control\BoundingOval.cs" />
      <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
      <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\ButtonHandler.cs" />
      <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
@@ -114,14 +115,12 @@
      <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\TouchPad.cs" />
      <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\VirtualInput.cs" />
      <Compile Include="Assets\Script\Control\ShipController.cs" />
-     <Compile Include="Assets\Script\Control\ShipUserControl2Axis.cs" />
      <Compile Include="Assets\Script\Control\ShipUserControl4Axis.cs" />
      <Compile Include="Assets\Script\Game.cs" />
      <Compile Include="Assets\Script\Hud\CheckDoButton.cs" />
      <Compile Include="Assets\Script\Hud\FPSDisplay.cs" />
-     <Compile Include="Assets\Script\Hud\GameScreen.cs" />
+     <Compile Include="Assets\Script\Hud\GameScreenManager.cs" />
      <Compile Include="Assets\Script\Hud\HudManager.cs" />
-     <Compile Include="Assets\Script\Hud\LimiterOfLeverScreen.cs" />
      <Compile Include="Assets\Script\Hud\ShipButton.cs" />
      <Compile Include="Assets\Script\Hud\SpeedVector.cs" />
      <Compile Include="Assets\Script\Particle\JetParticle.cs" />

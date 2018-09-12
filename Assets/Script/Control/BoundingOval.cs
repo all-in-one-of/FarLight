@@ -34,6 +34,8 @@ namespace fl
 
             hudM.pointHudPosition = m_NormalPosition;
             m_GameSM.ellipseConstraints = m_NormalPosition - m_GameSM.screenCenter;
+
+            //print(m_GameSM.screenCenter + " " + m_GameSM.resolution + " " + m_NormalPosition);
         }
          
         private Vector2 PositionEllipse(float r1, float r2, float x, float y)

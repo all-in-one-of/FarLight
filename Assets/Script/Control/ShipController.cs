@@ -11,22 +11,19 @@ namespace fl
         [SerializeField] private float m_MaxEnginePower = 10f;                      // Максимальная мощность двигателя.
         [SerializeField] private float m_MaxWarpEnginePower = 1000f;                // Максимальная мощность двигателя при варп-скачке.
         [SerializeField] private float m_ThrottleChangeSpeed = 0.3f;                // Скорость изменения дроссельной заслонки.
-
-        [SerializeField] private float m_RollEffect = 0.2f;                         // The strength of effect for roll input.
-        [SerializeField] private float m_DirectedRollEffect = 0.7f;
-        [SerializeField] private float m_RightEffect = 0.2f;
-        [SerializeField] private float m_UpEffect = 0.2f;
-        [SerializeField] private float m_PitchEffect = 0.2f;                        // The strength of effect for pitch input.
-        [SerializeField] private float m_YawEffect = 0.2f;                          // The strength of effect for yaw input.
-        [SerializeField] private float m_DragFactor = 0.001f;               // how much drag should increase with speed.
-        [SerializeField] private float m_AngularDragFactor = 0.25f;               // how much drag should increase with speed.
+        [SerializeField] private float m_RollEffect = 0.2f;                         // Коэффициент Roll-движения.
+        [SerializeField] private float m_DirectedRollEffect = 0.7f;                 // Коэффициент направленного Roll-движения.
+        [SerializeField] private float m_RightEffect = 0.2f;                        // Коэффициент Right-движения.
+        [SerializeField] private float m_UpEffect = 0.2f;                           // Коэффициент Up-движения.
+        [SerializeField] private float m_PitchEffect = 0.2f;                        // Коэффициент тангажа.
+        [SerializeField] private float m_YawEffect = 0.2f;                          // Коэффициент рыскания.
+        [SerializeField] private float m_DragFactor = 0.001f;                       // Коэффициент position-трения.
+        [SerializeField] private float m_AngularDragFactor = 0.25f;                 // Коэффициент rotation-трения.
 
         public float Throttle { get; private set; }                                 // Количество используемого дросселя.
-        public float EnginePower = 0;                                               // Сколько энергии подано двигатель.
         public float MaxEnginePower { get { return m_MaxEnginePower; } }            // Максимальная мощность двигателя.
         public float MaxWarpEnginePower { get { return m_MaxWarpEnginePower; } }    // Максимальная мощность двигателя при варп-скачке.
         public float ForwardSpeed { get; private set; }
-
         public float RollInput { get; private set; }
         public float PitchInput { get; private set; }
         public float YawInput { get; private set; }
@@ -34,33 +31,28 @@ namespace fl
         public float RightInput { get; private set; }
         public float UpInput { get; private set; }
 
-        [SerializeField] private float LossControlSpeed = 200f;
+        public float EnginePower = 0;                                               // Сколько энергии подано двигатель.
+        public float speedWreckageFactor = 0.1f;                                    // Коэффициент скорости космического мусора.
+        public float speedNebulaFactor = 0.3f;                                      // Коэффициент скорости туманности.
+        public Transform[] exchangeToolTransform;                                   // Массив объектов курсовых орудий.
+        public bool Blockage = false;                                               // Блокировка управления при смене режима камеры кабины.
+        public Transform flyingParticals;                                           // Объект пролетающих частиц.
+        public Transform wreckageParticals;                                         // Объект космического мусора.
+        public Transform nebulaParticals;                                           // Объект туманности.
+        public Transform cameraShip;                                                // Объект содержащий в себе скрипт "CameraShip".
 
         [HideInInspector] public Vector3 InvertdirectionVelocity;
         [HideInInspector] public Vector3 directionVelocity;
         [HideInInspector] public float absoluteSpeed;
-        public float speedWreckageFactor = 0.1f;
-        public float speedNebulaFactor = 0.3f;
-
-        private bool m_WarpActive = false;
-        private Rigidbody m_Rigidbody;
-
-        public Transform[] exchangeToolTransform;
-        private ExchangeTool[] m_Et;
-        public bool Blockage = false;
-
-
-        public Text speedText;
-        public Text powerText;
-        public Transform flyingParticals;
-        public Transform wreckageParticals;
         [HideInInspector] public ParticleSystem wreckage;
-        public Transform nebulaParticals;
         [HideInInspector] public ParticleSystem nebula;
-        public Transform cameraShip;
         [HideInInspector] public CameraShip cs;
 
-        Transform CenterOfMassObject; // TO DO
+        private bool m_WarpActive = false;                                          // Текущая активность Warp-скачка.
+        private Rigidbody m_Rigidbody;                                              // Физическое жёсткое тело.
+        private HudManager hudM;                                                    // HudManager, который работает с элементами hud.
+        private ExchangeTool[] m_Et;                                                // Массив курсовых орудий.
+        private Transform CenterOfMassObject; // TO DO                              // Центр масс космического корабля.
 
         private void Awake()
         {
@@ -88,6 +80,8 @@ namespace fl
         //    CenterOfMassObject = Instantiate(resM.GetPrefab("CenterOfMass")).transform; // TO DO
         //    CenterOfMassObject.position = centerOfMass; // TO DO
             m_Rigidbody.centerOfMass = centerOfMass; // TO DO
+
+            hudM = HudManager.GetInstance();
         }
 
         public void Attack(bool attackRight, bool attackLeft)
@@ -108,7 +102,6 @@ namespace fl
             RightInput = Mathf.Clamp(rightInput, -1, 1);
             UpInput = Mathf.Clamp(upInput, -1, 1);
 
-            // Убрать для кручения и сделать более точно.
             PitchInput = pitchInput;
             YawInput = yawInput;
 
@@ -121,32 +114,28 @@ namespace fl
             CalculateLinearForces();
 
             CalculateTorque();
-        }
 
+            // Установить гравитацию на все объекты системы.
+            //Physics.gravity = Vector3.zero;
+        }
 
         private void ControlThrottle()
         {
             Throttle = Mathf.Clamp01(Throttle + ThrottleInput * Time.deltaTime * m_ThrottleChangeSpeed);
             EnginePower = Throttle * m_MaxEnginePower;
 
-            powerText.text = (EnginePower + " / " + m_MaxEnginePower);
+            hudM.powerIndicatorText = (EnginePower.ToString("0.00") + " / " + m_MaxEnginePower);
         }
-
 
         private void CalculateDrag()
         {
             // Пространственное торможение.
             m_Rigidbody.drag = 1 + m_Rigidbody.velocity.magnitude * m_DragFactor;
-
             // Угловое торможение.
-            if (absoluteSpeed > LossControlSpeed) // TO DO
-            {
-                m_Rigidbody.angularDrag = 1 + /*m_OriginalAngularDrag **/ ForwardSpeed * m_AngularDragFactor; // В конце коэфф // TO DO
-            }
-            else // TO DO
-            {
-                m_Rigidbody.angularDrag = 1; // TO DO
-            }
+
+            float x = ForwardSpeed * m_AngularDragFactor;
+
+            m_Rigidbody.angularDrag = 0.2f * x * x + 1; // В конце коэфф // TO DO
         }
 
         private void CalculateForwardSpeed()
@@ -166,7 +155,8 @@ namespace fl
             main = nebula.main;
             main.simulationSpeed = absoluteSpeed * speedNebulaFactor;
 
-            speedText.text = (absoluteSpeed).ToString();
+            hudM.exchangeSpeedIndicatorText = ForwardSpeed.ToString("0.00");
+            hudM.speedIndicatorText = absoluteSpeed.ToString("0.00");
         }
 
         private void CalculateLinearForces()
@@ -201,8 +191,6 @@ namespace fl
 
             //torque = torqueMy;
             m_Rigidbody.AddTorque(torque/* * ForwardSpeed*/);
-
-            //print(m_WarpActive);
         }
 
         float SaveMaxEnginePower;
@@ -246,6 +234,3 @@ namespace fl
         }
     }
 }
-
-
-// Всё ещё влияет физика. Если повернуться по Z на -90 (крыло по вертикали), то скорость начнёт убывать. TO DO
