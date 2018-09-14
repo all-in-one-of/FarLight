@@ -31,7 +31,7 @@ namespace fl
         private void Start()
         {
             //TO DO. Из-за PostProcessingBehaviour лагает. Но если его перезапустить, то всё ок.
-            GetComponent<PostProcessingBehaviour>().enabled = true;
+            //GetComponent<PostProcessingBehaviour>().enabled = true;
         }
 
         private void FixedUpdate()
@@ -45,42 +45,51 @@ namespace fl
 
         private void Update()
         {
-            if (sc.EnginePower == sc.MaxWarpEnginePower)
-            {
-                _camera.transform.Rotate((Random.Range(-0.1f, 0.1f)), (Random.Range(-0.1f, 0.1f)), (Random.Range(-0.1f, 0.1f)));
-            }
+            //if (sc.EnginePower == sc.MaxWarpEnginePower)
+            //{
+                //_camera.transform.Rotate((Random.Range(-0.1f, 0.1f)), (Random.Range(-0.1f, 0.1f)), (Random.Range(-0.1f, 0.1f)));
+                //CameraShake.Shake(0.1f, 0.1f);
+            //}
             if (cameraMode == TypeCamera.Cockpit)
             {
                 Follow();
             }
-        }
 
-        public IEnumerator StartShaking()
-        {
-            // 3 секунды.
-            shakingPower = 0f;
-            velocityTo = 0.1F;
-
-            while (shakingPower < 0.2f)
+            if (Input.GetKeyDown(KeyCode.H))
             {
-                shakingPower = Mathf.SmoothDamp(shakingPower, 0.3f, ref velocityTo, 2);
-                _camera.transform.Rotate((Random.Range(-shakingPower, shakingPower)), (Random.Range(-shakingPower, shakingPower)), (Random.Range(-shakingPower, shakingPower)));
-                yield return null;
+                CameraShake.Shake(3f, 0.01f);
+                //CameraShake.
             }
         }
-        public IEnumerator FinishShaking()
-        {
-            // 6 секунд.
-            shakingPower = 0.2f;
-            velocityTo = 0.1F;
 
-            while (shakingPower > 0)
-            {
-                shakingPower = Mathf.SmoothDamp(shakingPower, -1f, ref velocityTo, 4);
-                _camera.transform.Rotate((Random.Range(-shakingPower, shakingPower)), (Random.Range(-shakingPower, shakingPower)), (Random.Range(-shakingPower, shakingPower)));
-                yield return null;
-            }
-        }
+        //public IEnumerator StartShaking()
+        //{
+        //    // 3 секунды.
+        //    shakingPower = 0f;
+        //    velocityTo = 0.1F;
+
+        //    while (shakingPower < 0.2f)
+        //    {
+        //        // shakingPower = Mathf.SmoothDamp(shakingPower, 0.3f, ref velocityTo, 2);
+        //        // _camera.transform.Rotate((Random.Range(-shakingPower, shakingPower)), (Random.Range(-shakingPower, shakingPower)), (Random.Range(-shakingPower, shakingPower)));
+        //        //CameraShake.Shake(1, 1);
+        //        yield return null;
+        //    }
+        //}
+        //public IEnumerator FinishShaking()
+        //{
+        //    // 6 секунд.
+        //    shakingPower = 0.2f;
+        //    velocityTo = 0.1F;
+
+        //    while (shakingPower > 0)
+        //    {
+        //        //shakingPower = Mathf.SmoothDamp(shakingPower, -1f, ref velocityTo, 4);
+        //        //_camera.transform.Rotate((Random.Range(-shakingPower, shakingPower)), (Random.Range(-shakingPower, shakingPower)), (Random.Range(-shakingPower, shakingPower)));
+        //        //CameraShake.Shake(1, 1);
+        //        yield return null;
+        //    }
+        //}
 
         // Камера "не успевает" за объектом при больших скоростях потому что fixedupdate. TO DO.
         private void SmoothFollow()

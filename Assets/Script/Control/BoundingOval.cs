@@ -34,15 +34,15 @@ namespace fl
 
             hudM.pointHudPosition = m_NormalPosition;
             m_GameSM.ellipseConstraints = m_NormalPosition - m_GameSM.screenCenter;
-
-            //print(m_GameSM.screenCenter + " " + m_GameSM.resolution + " " + m_NormalPosition);
         }
          
-        private Vector2 PositionEllipse(float r1, float r2, float x, float y)
+        private Vector2 PositionEllipse(float r1, float r2, float x, float y) // ТУТ ВПОЛНЕ МОЖЕТ БЫТЬ НЕПРАВИЛЬНЫЙ ВЫВОД. TO DO
         {
             float a = x / r1;
             float b = y / r2;
             float k = Mathf.Sqrt(a * a + b * b);
+            //print(k);
+            //if (k == 0) k = 1;
             return new Vector2(x / k, y / k);
         }
     }

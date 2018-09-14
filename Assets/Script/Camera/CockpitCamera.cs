@@ -33,27 +33,29 @@ namespace fl
         private void Start()
         {
             hudM = HudManager.GetInstance();
+            //Cursor.visible = false;
         }
 
-        // Забираем управление.
+        // РЕЖИМ ОСМОТРА.
         void CaptureInput()
         {
-            Cursor.visible = false;
+            hudM.activeVisualAssistant = false;
             Cursor.lockState = CursorLockMode.Locked;
-            hudM.controlLock = false;
             m_inputCaptured = true;
             m_Sc.Blockage = true;
         }
 
-        // Возращаем управление.
+        // РЕЖИМ УПРАВЛЕНИЯ.
         public void ReleaseInput()
         {
+            hudM.activeVisualAssistant = true;
+
             m_Yaw = transform.localRotation.eulerAngles.y;
             m_Pitch = transform.localRotation.eulerAngles.x;
 
-            Cursor.visible = true;
+            //m_Camera.transform.localRotation = Quaternion.Euler(Vector3.zero);
+
             Cursor.lockState = CursorLockMode.None;
-            hudM.controlLock = true;
             m_inputCaptured = false;
             m_Sc.Blockage = false;
         }
@@ -66,6 +68,7 @@ namespace fl
 
         void Update()
         {
+            // TO DO. Настройка клавиши.
             if (Input.GetMouseButtonDown(1))
             {
                 if (!m_inputCaptured)

@@ -5,27 +5,36 @@ namespace fl
     public class CameraSwitching : MonoBehaviour
     {
 
-        public GameObject GeneralCamera;
+        //public GameObject GeneralCamera;
+        public GameObject GeneralCameraObject;
+        public GameObject CockpitCameraObject;
         public GameObject CockpitCamera;
 
         private bool camSwitch = false;
         private bool camSwitchSave = false;
+
+        private HudManager hudM;
 
         public GameObject[] ObjectCockpit;
         
 
         void Start()
         {
+            hudM = HudManager.GetInstance();
+
             // В General курсор не нужен.
-            Cursor.visible = false; 
+            Cursor.visible = false;
             // Ставим активность кабины пилота.
-            CockpitCamera.SetActive(false);
+            CockpitCameraObject.SetActive(false);
             // Ставим активность объектов кабины пилота.
             SetActiveArrayCockpit(false);
+
+            hudM.activeVisualAssistant = true;
         }
 
         void Update()
         {
+            // TO DO. Настройка клавиши.
             if (Input.GetKeyDown(KeyCode.C))
             {
                 camSwitch = !camSwitch;
@@ -35,19 +44,20 @@ namespace fl
             {
                 if (camSwitch)
                 {
-                    Cursor.visible = true;
-                    CockpitCamera.SetActive(true);
+                    //Cursor.visible = true;
+                    CockpitCameraObject.SetActive(true);
                     SetActiveArrayCockpit(true);
-                    GeneralCamera.SetActive(false);
+                    GeneralCameraObject.SetActive(false);
                 }
                 else
                 {
+                    hudM.activeVisualAssistant = true;
                     // Возвращаем режим "изучения".
                     CockpitCamera.GetComponent<CockpitCamera>().ReleaseInput();
-                    Cursor.visible = false;
-                    CockpitCamera.SetActive(false);
+                    //Cursor.visible = false;
+                    CockpitCameraObject.SetActive(false);
                     SetActiveArrayCockpit(false);
-                    GeneralCamera.SetActive(true);
+                    GeneralCameraObject.SetActive(true);
                 }
                 camSwitchSave = camSwitch;
             }

@@ -349,6 +349,7 @@
     <Compile Include="Assets\Script\Camera\CameraShip.cs" />
     <Compile Include="Assets\Script\Camera\CameraSwitching.cs" />
     <Compile Include="Assets\Script\Camera\CockpitCamera.cs" />
+    <Compile Include="Assets\Script\CameraShake.cs" />
     <Compile Include="Assets\Script\Control\BoundingOval.cs" />
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\ButtonHandler.cs" />
@@ -362,7 +363,6 @@
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\TouchPad.cs" />
     <Compile Include="Assets\Script\Control\CrossPlatformInput\Scripts\VirtualInput.cs" />
     <Compile Include="Assets\Script\Control\ShipController.cs" />
-    <Compile Include="Assets\Script\Control\ShipUserControl2Axis.cs" />
     <Compile Include="Assets\Script\Control\ShipUserControl4Axis.cs" />
     <Compile Include="Assets\Script\Game.cs" />
     <Compile Include="Assets\Script\Hud\CheckDoButton.cs" />
@@ -421,7 +421,6 @@
     <None Include="Assets\PostProcessing\Resources\Shaders\Uber.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\UberSecondPass.cginc" />
     <None Include="Assets\PostProcessing\Utilities\CustomMotionTexture\Shaders\CustomMotionVectorTexture.shader" />
-    <None Include="Assets\Shaders\ComboEarth.shader" />
     <None Include="Assets\Shaders\Earth.shader" />
     <None Include="Assets\Shaders\Otmosphere.shader" />
     <None Include="C:\Users\Администратор\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.8.8\Editor\Resources\Styles\Main_Dark.uss" />

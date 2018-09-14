@@ -436,7 +436,6 @@
     <None Include="Assets\PostProcessing\Resources\Shaders\Uber.shader" />
     <None Include="Assets\PostProcessing\Resources\Shaders\UberSecondPass.cginc" />
     <None Include="Assets\PostProcessing\Utilities\CustomMotionTexture\Shaders\CustomMotionVectorTexture.shader" />
-    <None Include="Assets\Shaders\ComboEarth.shader" />
     <None Include="Assets\Shaders\Earth.shader" />
     <None Include="Assets\Shaders\Otmosphere.shader" />
     <None Include="C:\Users\Администратор\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.8.8\Editor\Resources\Styles\Main_Dark.uss" />

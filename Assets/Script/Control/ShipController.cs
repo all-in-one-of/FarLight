@@ -31,16 +31,20 @@ namespace fl
         public float RightInput { get; private set; }
         public float UpInput { get; private set; }
 
-        public float EnginePower = 0;                                               // Сколько энергии подано двигатель.
         public float speedWreckageFactor = 0.1f;                                    // Коэффициент скорости космического мусора.
         public float speedNebulaFactor = 0.3f;                                      // Коэффициент скорости туманности.
         public Transform[] exchangeToolTransform;                                   // Массив объектов курсовых орудий.
-        public bool Blockage = false;                                               // Блокировка управления при смене режима камеры кабины.
         public Transform flyingParticals;                                           // Объект пролетающих частиц.
         public Transform wreckageParticals;                                         // Объект космического мусора.
         public Transform nebulaParticals;                                           // Объект туманности.
         public Transform cameraShip;                                                // Объект содержащий в себе скрипт "CameraShip".
 
+        [HideInInspector] public bool Blockage = false;                        // Блокировка управления при смене режима камеры кабины.
+        [HideInInspector] public bool BlockageAttack = false;                             
+        [HideInInspector] public bool BlockageManeuver = false;
+        [HideInInspector] public bool BlockageWarp = false;
+        [HideInInspector] public bool BlockageThrottle = false;
+        [HideInInspector] public float EnginePower = 0;                             // Сколько энергии подано двигатель.
         [HideInInspector] public Vector3 InvertdirectionVelocity;
         [HideInInspector] public Vector3 directionVelocity;
         [HideInInspector] public float absoluteSpeed;
@@ -71,22 +75,22 @@ namespace fl
             }
         }
 
-        //ResourceManager resM; // TO DO
+        ResourceManager resM; // TO DO
         public Vector3 centerOfMass = new Vector3(0f, -7.3f, 27f); // TO DO
 
         void Start()
         {
-        //    resM = ResourceManager.GetInstance();
-        //    CenterOfMassObject = Instantiate(resM.GetPrefab("CenterOfMass")).transform; // TO DO
-        //    CenterOfMassObject.position = centerOfMass; // TO DO
+            resM = ResourceManager.GetInstance();
+            CenterOfMassObject = Instantiate(resM.GetPrefab("CenterOfMass")).transform; // TO DO
+            CenterOfMassObject.position = centerOfMass; // TO DO
             m_Rigidbody.centerOfMass = centerOfMass; // TO DO
 
             hudM = HudManager.GetInstance();
         }
 
-        public void Attack(bool attackRight, bool attackLeft)
+        public void Attack(bool attackRight/*, bool attackLeft*/)
         {
-            if (attackRight && !Blockage)
+            if (attackRight)
             {
                 foreach (var tool in m_Et)
                 {
@@ -105,6 +109,8 @@ namespace fl
             PitchInput = pitchInput;
             YawInput = yawInput;
 
+            UpdateBlockage();
+
             CalculateForwardSpeed();
 
             ControlThrottle();
@@ -119,6 +125,15 @@ namespace fl
             //Physics.gravity = Vector3.zero;
         }
 
+        private void UpdateBlockage()
+        {
+            // Если блокировка двигателя, то ThrottleInput = -1.
+            if (BlockageThrottle)
+            {
+                ThrottleInput = -1;
+            }
+        }
+
         private void ControlThrottle()
         {
             Throttle = Mathf.Clamp01(Throttle + ThrottleInput * Time.deltaTime * m_ThrottleChangeSpeed);
@@ -131,17 +146,16 @@ namespace fl
         {
             // Пространственное торможение.
             m_Rigidbody.drag = 1 + m_Rigidbody.velocity.magnitude * m_DragFactor;
+            
             // Угловое торможение.
-
             float x = ForwardSpeed * m_AngularDragFactor;
-
-            m_Rigidbody.angularDrag = 0.2f * x * x + 1; // В конце коэфф // TO DO
+            m_Rigidbody.angularDrag = 0.1f * x * x + 1; // TO DO
         }
 
         private void CalculateForwardSpeed()
         {
             InvertdirectionVelocity = transform.InverseTransformDirection(m_Rigidbody.velocity);
-            ForwardSpeed = Mathf.Max(0, InvertdirectionVelocity.z); // Доработать! От 0 до вектора скорости.
+            ForwardSpeed = Mathf.Max(0, InvertdirectionVelocity.z);
 
             directionVelocity = m_Rigidbody.velocity;
             if (directionVelocity != Vector3.zero)
@@ -201,8 +215,10 @@ namespace fl
             {
                 m_WarpActive = true;
                 Debug.Log("Варп скачок через 15 секунд.");
-                yield return new WaitForSecondsRealtime(12f);
-                yield return StartCoroutine(cs.StartShaking());
+                yield return new WaitForSecondsRealtime(1f); // ПОСТАВИТЬ ТУТ 12f
+                //yield return StartCoroutine(cs.StartShaking());
+                CameraShake.Shake(3f, 0.05f);
+                yield return new WaitForSecondsRealtime(3f);
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
                     m_WarpActive = false;
@@ -223,7 +239,9 @@ namespace fl
         {
             m_WarpActive = false;
             m_MaxEnginePower = SaveMaxEnginePower;
-            yield return StartCoroutine(cs.FinishShaking());
+            CameraShake.Shake(3f, 0.5f);
+            yield return new WaitForSecondsRealtime(3f);
+            //yield return StartCoroutine(cs.FinishShaking());
             yield return null;
         }
 

@@ -11,6 +11,7 @@ namespace fl
     /// </summary>
     public class HudManager : MonoBehaviour
     {
+        public GameObject visualAssistant;
         public Transform pointHud;
         public Text speedText;
         public Text exchangeSpeedText;
@@ -18,18 +19,19 @@ namespace fl
 
         [HideInInspector] public Vector3 pointHudPosition;
 
-        // Блокировка управления кораблём посредством мыши (режим "исследователя" в кабине)
-        [HideInInspector] public bool controlLock = false;
-
         // ... 
 
         [HideInInspector] public string speedIndicatorText;
         [HideInInspector] public string exchangeSpeedIndicatorText;
         [HideInInspector] public string powerIndicatorText;
 
+        [HideInInspector] public bool activeVisualAssistant;
 
         private void Update()
         {
+            // ОПТИМИЗАЦИЯ. TO DO
+            visualAssistant.SetActive(activeVisualAssistant);
+
             pointHud.position = Vector3.Lerp(pointHud.position, pointHudPosition, Time.deltaTime * 10);
             speedText.text = speedIndicatorText;
             exchangeSpeedText.text = exchangeSpeedIndicatorText;
