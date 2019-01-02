@@ -8,43 +8,25 @@ namespace fl
     {
         public bool isReactorRunning = false;
         public string DamageSituation { get; set; }
-
-        public Text state;
+        //public Text state;
 
         public Transform ship;
         private ShipController m_Ship;
-
-        private AudioSource m_ReactorStartSoundSource;
-        [SerializeField] private AudioClip m_ReactorStart;
-
-        private AudioSource m_ErrorBeepSoundSource;
-        [SerializeField] private AudioClip m_ErrorBeep;
+        private AudioManager m_AudioM;
 
         private void Awake()
         {
             m_Ship = ship.GetComponent<ShipController>();
-
-            m_ReactorStartSoundSource = gameObject.AddComponent<AudioSource>();
-            m_ReactorStartSoundSource.playOnAwake = false;
-            m_ReactorStartSoundSource.clip = m_ReactorStart;
-
-            m_ErrorBeepSoundSource = gameObject.AddComponent<AudioSource>();
-            m_ErrorBeepSoundSource.playOnAwake = false;
-            m_ErrorBeepSoundSource.clip = m_ErrorBeep;
-
+            m_AudioM = AudioManager.GetInstance();
             DamageSituation = "normal";
         }
 
         private void FixedUpdate()
         {
-            state.text = DamageSituation;
+            //state.text = DamageSituation;
             if (DamageSituation == "critical" || DamageSituation == "slight")
             {
                 FailuresReactor();
-            }
-            if (DamageSituation == "ruined")
-            {
-                isReactorRunning = false;
             }
         }
 
@@ -102,9 +84,8 @@ namespace fl
         public IEnumerator AutoRestartDelay(float deley)
         {
             LogReactor("Сбой запуска реактора. Перезапуск через " + deley + " секунды.");
-            m_ErrorBeepSoundSource.Play();
+            m_AudioM.Play("SoftBeep3");
             yield return new WaitForSecondsRealtime(deley);
-            //RestartLaunching = true;
             TryLaunchingReactor();
         }
 
@@ -112,7 +93,7 @@ namespace fl
         public IEnumerator LaunchingReactor(float deley)
         {
             LogReactor("Реактор запускается.");
-            m_ReactorStartSoundSource.Play();
+            m_AudioM.Play("StartReactor");
             yield return new WaitForSecondsRealtime(deley);
             isReactorRunning = true;
             m_Ship.BlockageThrottle = false;
@@ -125,6 +106,8 @@ namespace fl
             isReactorRunning = false;
             m_Ship.BlockageThrottle = true;
             LogReactor("Реактор выключен.");
+            m_AudioM.Play("Beep2_1");
+            //m_AudioM.Play("ShutDown");
         }
 
         // Сбои реактора.
@@ -155,6 +138,7 @@ namespace fl
         public void ReactorExplosion()
         {
             DamageSituation = "ruined";
+            isReactorRunning = false;
             LogReactor("Взрыв реактора. Переход на резервный генератор.");
         }
 

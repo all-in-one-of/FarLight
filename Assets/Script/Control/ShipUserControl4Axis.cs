@@ -36,8 +36,17 @@ namespace fl
                 if (!m_Ship.BlockageAttack)
                 {
                     // TO DO. Настройка клавиши.
-                    m_AttackRight = Input.GetMouseButton(0);
-                    //m_AttackLeft = Input.GetMouseButton(1);
+                    m_AttackRight = Input.GetMouseButton(1);
+                    m_AttackLeft = Input.GetMouseButton(0);
+                    if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || Input.GetKeyDown(KeyCode.R)) // KEY MOUSE AND R
+                    {
+                        m_Ship.EndAttack();
+                    }
+                }
+                else
+                {
+                    m_AttackRight = false;
+                    m_AttackLeft = false;
                 }
 
                 if (!m_Ship.BlockageManeuver)
@@ -53,12 +62,26 @@ namespace fl
                     m_Up = (Input.GetKey(KeyCode.Space) ? 1f : 0f) - (Input.GetKey(KeyCode.LeftAlt) ? 1f : 0f);
 
                     // Рыскание.
-                    m_Yaw = (Mathf.Abs(m_GameSM.mouseDeflection.x - m_GameSM.ellipseConstraints.x) > 0) ? m_GameSM.ellipseConstraints.x : m_GameSM.mouseDeflection.x;
-                    m_Yaw = m_Yaw / m_GameSM.screenCenter.x;
+                    if (Mathf.Abs(m_GameSM.mouseDeflection.x) < m_GameSM.screenCenter.x * 0.02f)
+                    {
+                        m_Yaw = 0;
+                    }
+                    else
+                    {
+                        m_Yaw = (Mathf.Abs(m_GameSM.mouseDeflection.x - m_GameSM.ellipseConstraints.x) > 0) ? m_GameSM.ellipseConstraints.x : m_GameSM.mouseDeflection.x;
+                        m_Yaw = m_Yaw / m_GameSM.screenCenter.x;
+                    }
 
                     // Тангаж.
-                    m_Pitch = (Mathf.Abs(m_GameSM.mouseDeflection.y - m_GameSM.ellipseConstraints.y) > 0) ? m_GameSM.ellipseConstraints.y : m_GameSM.mouseDeflection.y;
-                    m_Pitch = m_Pitch / m_GameSM.screenCenter.y;
+                    if (Mathf.Abs(m_GameSM.mouseDeflection.y) < m_GameSM.screenCenter.y * 0.02f)
+                    {
+                        m_Pitch = 0;
+                    }
+                    else
+                    {
+                        m_Pitch = (Mathf.Abs(m_GameSM.mouseDeflection.y - m_GameSM.ellipseConstraints.y) > 0) ? m_GameSM.ellipseConstraints.y : m_GameSM.mouseDeflection.y;
+                        m_Pitch = m_Pitch / m_GameSM.screenCenter.y;
+                    }
                 }
 
                 if (!m_Ship.BlockageThrottle)
@@ -78,7 +101,7 @@ namespace fl
             }
 
             m_Ship.Move(m_Roll, m_Pitch, m_Yaw, m_Throttle, m_Right, m_Up);
-            m_Ship.Attack(m_AttackRight/*, m_AttackLeft*/);
+            m_Ship.Attack(m_AttackRight, m_AttackLeft);
         }
 
         private void Warp()

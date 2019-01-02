@@ -38,8 +38,10 @@ namespace fl
         public Transform wreckageParticals;                                         // Объект космического мусора.
         public Transform nebulaParticals;                                           // Объект туманности.
         public Transform cameraShip;                                                // Объект содержащий в себе скрипт "CameraShip".
+        public bool IsWarpPreparation = false;                                      // Подготовка к Warp-скачку.
+        public bool IsWarp = false;                                                 // Активность Warp-скачка.
 
-        [HideInInspector] public bool Blockage = false;                        // Блокировка управления при смене режима камеры кабины.
+        [HideInInspector] public bool Blockage = false;                             // Блокировка управления при смене режима камеры кабины.
         [HideInInspector] public bool BlockageAttack = false;                             
         [HideInInspector] public bool BlockageManeuver = false;
         [HideInInspector] public bool BlockageWarp = false;
@@ -50,18 +52,17 @@ namespace fl
         [HideInInspector] public float absoluteSpeed;
         [HideInInspector] public ParticleSystem wreckage;
         [HideInInspector] public ParticleSystem nebula;
-        [HideInInspector] public CameraShip cs;
+        [HideInInspector] public ShipCamera cs;
 
-        private bool m_WarpActive = false;                                          // Текущая активность Warp-скачка.
         private Rigidbody m_Rigidbody;                                              // Физическое жёсткое тело.
         private HudManager hudM;                                                    // HudManager, который работает с элементами hud.
         private ExchangeTool[] m_Et;                                                // Массив курсовых орудий.
-        private Transform CenterOfMassObject; // TO DO                              // Центр масс космического корабля.
+        //private Transform CenterOfMassObject; // TO DO                            // Центр масс космического корабля.
 
         private void Awake()
         {
             m_Rigidbody = GetComponent<Rigidbody>();
-            cs = cameraShip.GetComponent<CameraShip>();
+            cs = cameraShip.GetComponent<ShipCamera>();
             wreckage = wreckageParticals.GetComponent<ParticleSystem>();
             nebula = nebulaParticals.GetComponent<ParticleSystem>();
 
@@ -75,27 +76,35 @@ namespace fl
             }
         }
 
-        ResourceManager resM; // TO DO
+        //ResourceManager resM; // TO DO
         public Vector3 centerOfMass = new Vector3(0f, -7.3f, 27f); // TO DO
 
         void Start()
         {
-            resM = ResourceManager.GetInstance();
-            CenterOfMassObject = Instantiate(resM.GetPrefab("CenterOfMass")).transform; // TO DO
-            CenterOfMassObject.position = centerOfMass; // TO DO
+            //resM = ResourceManager.GetInstance();
+            //CenterOfMassObject = Instantiate(resM.GetPrefab("CenterOfMass")).transform; // TO DO
+            //CenterOfMassObject.position = centerOfMass; // TO DO
             m_Rigidbody.centerOfMass = centerOfMass; // TO DO
 
             hudM = HudManager.GetInstance();
         }
 
-        public void Attack(bool attackRight/*, bool attackLeft*/)
+        public void Attack(bool attackRight, bool attackLeft)
         {
-            if (attackRight)
+            if (attackLeft)
             {
                 foreach (var tool in m_Et)
                 {
                     tool.Attack();
                 }
+            }
+        }
+
+        public void EndAttack()
+        {
+            foreach (var tool in m_Et)
+            {
+                tool.EndAttack();
             }
         }
 
@@ -118,6 +127,8 @@ namespace fl
             CalculateDrag();
 
             CalculateLinearForces();
+
+            CalculateFlyingParticals();
 
             CalculateTorque();
 
@@ -152,24 +163,42 @@ namespace fl
             m_Rigidbody.angularDrag = 0.1f * x * x + 1; // TO DO
         }
 
+        // Сетим настройки на летающие частицы вокруг корабля.
+        private void CalculateFlyingParticals()
+        {
+            // Вектор скорости.
+            directionVelocity = m_Rigidbody.velocity;
+            if (directionVelocity != Vector3.zero)
+            {
+                flyingParticals.rotation = Quaternion.Lerp(flyingParticals.rotation, Quaternion.LookRotation(directionVelocity), Time.deltaTime);
+            }
+
+            // Численное значение скорости.
+            absoluteSpeed = m_Rigidbody.velocity.magnitude;
+
+            var main = wreckage.main;
+            main.simulationSpeed = absoluteSpeed * speedWreckageFactor;
+
+            // TO DO
+            Color colorW = main.startColor.color;
+            main.startColor = new Color(colorW.r, colorW.g, colorW.b, absoluteSpeed / 40f);
+
+            main = nebula.main;
+            main.simulationSpeed = absoluteSpeed * speedNebulaFactor;
+
+            // TO DO
+            Color colorN = main.startColor.color;
+            main.startColor = new Color(colorN.r, colorN.g, colorN.b, absoluteSpeed / 40f);
+        }
+
         private void CalculateForwardSpeed()
         {
             InvertdirectionVelocity = transform.InverseTransformDirection(m_Rigidbody.velocity);
             ForwardSpeed = Mathf.Max(0, InvertdirectionVelocity.z);
 
-            directionVelocity = m_Rigidbody.velocity;
-            if (directionVelocity != Vector3.zero)
-            {
-                flyingParticals.rotation = Quaternion.LookRotation(directionVelocity);
-            }
-
-            absoluteSpeed = Mathf.Abs(directionVelocity.x + directionVelocity.y + directionVelocity.z);
-            var main = wreckage.main;
-            main.simulationSpeed = absoluteSpeed * speedWreckageFactor;
-            main = nebula.main;
-            main.simulationSpeed = absoluteSpeed * speedNebulaFactor;
-
+            // Скорость направленная вперёд.
             hudM.exchangeSpeedIndicatorText = ForwardSpeed.ToString("0.00");
+            // Скорость абсолютная.
             hudM.speedIndicatorText = absoluteSpeed.ToString("0.00");
         }
 
@@ -179,10 +208,9 @@ namespace fl
             forces += EnginePower * transform.forward;
             forces += RightInput * m_RightEffect * transform.right;
             forces += UpInput * m_UpEffect * transform.up;
-            m_Rigidbody.AddForce(forces);
+            m_Rigidbody.AddForce(forces * Time.deltaTime);
+            //m_Rigidbody.AddForce(forces * Time.deltaTime, ForceMode.Acceleration); // Подумать. TO DO
         }
-
-        //public Vector3 torqueMy;
 
         private void CalculateTorque()
         {
@@ -192,41 +220,41 @@ namespace fl
             float Yaw = YawInput * m_YawEffect;
             float DirectedRoll = m_DirectedRollEffect * Yaw;
 
+            torque += Yaw * transform.up;
+
             if (Yaw < 0)
             {
-                torque += Yaw * transform.up + (- DirectedRoll * transform.forward);
+                torque += (- DirectedRoll * transform.forward);
             }
             else
             {
-                torque += Yaw * transform.up - DirectedRoll * transform.forward;
+                torque -= DirectedRoll * transform.forward;
             }
 
             torque += RollInput * m_RollEffect * transform.forward;
-
-            //torque = torqueMy;
-            m_Rigidbody.AddTorque(torque/* * ForwardSpeed*/);
+            m_Rigidbody.AddTorque(torque * Time.deltaTime);
+            //m_Rigidbody.AddTorque(torque * Time.deltaTime, ForceMode.Acceleration); // Подумать. TO DO
         }
 
         float SaveMaxEnginePower;
 
         public IEnumerator Warp()
         {
-            if (!m_WarpActive)
+            if (!IsWarpPreparation)
             {
-                m_WarpActive = true;
+                IsWarpPreparation = true;
                 Debug.Log("Варп скачок через 15 секунд.");
-                yield return new WaitForSecondsRealtime(1f); // ПОСТАВИТЬ ТУТ 12f
+                yield return new WaitForSecondsRealtime(10f); // Поставь обратно 10. TO DO
                 //yield return StartCoroutine(cs.StartShaking());
-                CameraShake.Shake(3f, 0.05f);
-                yield return new WaitForSecondsRealtime(3f);
                 if (!Input.GetKey(KeyCode.LeftShift))
                 {
-                    m_WarpActive = false;
+                    IsWarpPreparation = false;
                     Debug.Log("Отмена варп скачка.");
                     yield return null;
                 }
                 else
                 {
+                    IsWarp = true;
                     SaveMaxEnginePower = m_MaxEnginePower;
                     m_MaxEnginePower = MaxWarpEnginePower;
                     yield return StartCoroutine(WaitForKeyUp(KeyCode.LeftShift));
@@ -237,10 +265,9 @@ namespace fl
 
         public IEnumerator CompletionWarp()
         {
-            m_WarpActive = false;
+            IsWarp = false;
+            IsWarpPreparation = false;
             m_MaxEnginePower = SaveMaxEnginePower;
-            CameraShake.Shake(3f, 0.5f);
-            yield return new WaitForSecondsRealtime(3f);
             //yield return StartCoroutine(cs.FinishShaking());
             yield return null;
         }

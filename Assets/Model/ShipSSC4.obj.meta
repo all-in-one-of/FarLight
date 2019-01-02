@@ -1,0 +1,155 @@
+fileFormatVersion: 2
+guid: 123ccaf93c51d1647a77d74427db4ac9
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: SSC4_ExchangeTools_Mesh1_Model.001
+    100004: "SSC4_JetLeft_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.004"
+    100006: "SSC4_JetRight_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.003"
+    100008: SSC4_JetUp_Mesh1_Model.002
+    100010: "SSC4_LittleWing_\u041A\u0443\u0431"
+    100012: SSC4_MainBody_Mesh1_Model
+    100014: SSC4_MainWing_Mesh1_Model.008
+    100016: SSC4_NavigationLightsRightGreen_Cube.001
+    100018: SSC4_NavigationLightsRightRed_Cube.002
+    100020: SSC4_ShaftEngine_Mesh1_Model.009
+    100022: SSC4_WarpEngine_Mesh1_Model.003
+    400000: //RootNode
+    400002: SSC4_ExchangeTools_Mesh1_Model.001
+    400004: "SSC4_JetLeft_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.004"
+    400006: "SSC4_JetRight_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.003"
+    400008: SSC4_JetUp_Mesh1_Model.002
+    400010: "SSC4_LittleWing_\u041A\u0443\u0431"
+    400012: SSC4_MainBody_Mesh1_Model
+    400014: SSC4_MainWing_Mesh1_Model.008
+    400016: SSC4_NavigationLightsRightGreen_Cube.001
+    400018: SSC4_NavigationLightsRightRed_Cube.002
+    400020: SSC4_ShaftEngine_Mesh1_Model.009
+    400022: SSC4_WarpEngine_Mesh1_Model.003
+    2100000: SSC4_ExchangeTools_Mesh1_Model.001Mat
+    2100002: "SSC4_JetLeft_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.004Mat"
+    2100004: "SSC4_JetRight_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.003Mat"
+    2100006: SSC4_JetUp_Mesh1_Model.002Mat
+    2100008: "SSC4_LittleWing_\u041A\u0443\u0431Mat"
+    2100010: SSC4_MainBody_Mesh1_ModelMat
+    2100012: SSC4_MainWing_Mesh1_Model.008Mat
+    2100014: SSC4_NavigationLightsRightGreen_Cube.001Mat
+    2100016: SSC4_NavigationLightsRightRed_Cube.002Mat
+    2100018: SSC4_ShaftEngine_Mesh1_Model.009Mat
+    2100020: SSC4_WarpEngine_Mesh1_Model.003Mat
+    2300000: SSC4_ExchangeTools_Mesh1_Model.001
+    2300002: "SSC4_JetLeft_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.004"
+    2300004: "SSC4_JetRight_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.003"
+    2300006: SSC4_JetUp_Mesh1_Model.002
+    2300008: "SSC4_LittleWing_\u041A\u0443\u0431"
+    2300010: SSC4_MainBody_Mesh1_Model
+    2300012: SSC4_MainWing_Mesh1_Model.008
+    2300014: SSC4_NavigationLightsRightGreen_Cube.001
+    2300016: SSC4_NavigationLightsRightRed_Cube.002
+    2300018: SSC4_ShaftEngine_Mesh1_Model.009
+    2300020: SSC4_WarpEngine_Mesh1_Model.003
+    3300000: SSC4_ExchangeTools_Mesh1_Model.001
+    3300002: "SSC4_JetLeft_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.004"
+    3300004: "SSC4_JetRight_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.003"
+    3300006: SSC4_JetUp_Mesh1_Model.002
+    3300008: "SSC4_LittleWing_\u041A\u0443\u0431"
+    3300010: SSC4_MainBody_Mesh1_Model
+    3300012: SSC4_MainWing_Mesh1_Model.008
+    3300014: SSC4_NavigationLightsRightGreen_Cube.001
+    3300016: SSC4_NavigationLightsRightRed_Cube.002
+    3300018: SSC4_ShaftEngine_Mesh1_Model.009
+    3300020: SSC4_WarpEngine_Mesh1_Model.003
+    4300000: SSC4_ExchangeTools_Mesh1_Model.001
+    4300002: "SSC4_JetLeft_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.004"
+    4300004: "SSC4_JetRight_\u0426\u0438\u043B\u0438\u043D\u0434\u0440.003"
+    4300006: SSC4_JetUp_Mesh1_Model.002
+    4300008: "SSC4_LittleWing_\u041A\u0443\u0431"
+    4300010: SSC4_MainBody_Mesh1_Model
+    4300012: SSC4_MainWing_Mesh1_Model.008
+    4300014: SSC4_NavigationLightsRightGreen_Cube.001
+    4300016: SSC4_NavigationLightsRightRed_Cube.002
+    4300018: SSC4_ShaftEngine_Mesh1_Model.009
+    4300020: SSC4_WarpEngine_Mesh1_Model.003
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

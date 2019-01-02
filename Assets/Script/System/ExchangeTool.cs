@@ -6,34 +6,62 @@ namespace fl
 {
     public class ExchangeTool : MonoBehaviour
     {
-        public Transform ship;
-        public float scatter = 0.6f;
+        public float fireRate = 4f;
+        public float fireBulletSpeed = 30f;
+        public float bulletLifeTime = 4f;
+        public float crossExchangeToolFactor = 0.3f;
+        public float shiftToCamera = -1.3f;
+        public GameObject mazzle;
+        public GameObject spray;
+        public GameObject heatRemoval;
 
+        public enum GunSide { Right = 0, Left = 1 };
+        public GunSide gunSide = GunSide.Right;
+
+        public Transform listShells;
+
+        private ParticleSystem mazzleParticle;
+        private ParticleSystem sprayParticle;
+        private ParticleSystem heatRemovalParticle;
         private GameObject m_object;
         private GameObject m_Prefab;
         private Rigidbody m_Rigidbody;
+        private ResourceManager resM;
+        private float timeToFire = 0;
+        private float crossFactor = 0;
 
-        ResourceManager resM;
+        private void Awake()
+        {
+            mazzleParticle = mazzle.GetComponent<ParticleSystem>();
+            sprayParticle = spray.GetComponent<ParticleSystem>();
+            heatRemovalParticle = heatRemoval.GetComponent<ParticleSystem>();
+            crossFactor = (gunSide == GunSide.Right) ? -crossExchangeToolFactor : crossExchangeToolFactor;
+        }
 
-        void Start()
+        private void Start()
         {
             resM = ResourceManager.GetInstance();
-            m_Prefab = resM.GetPrefab("LaserBeam");
+            m_Prefab = resM.GetPrefab("PlasmaProjectile");
         }
 
         public void Attack()
         {
-            m_object = Instantiate(m_Prefab);
-            m_object.transform.position = transform.position;
-            m_object.transform.rotation = transform.rotation * Quaternion.Euler(90f, 0f, 0f);
-            m_Rigidbody = m_object.GetComponent<Rigidbody>();
-            Vector3 newFwd = ship.transform.rotation * Vector3.forward;
-
-            m_Rigidbody.velocity = new Vector3(
-                newFwd.x * 200f + Random.Range(-scatter, scatter), 
-                newFwd.y * 200f + Random.Range(-scatter, scatter), 
-                newFwd.z * 200f + Random.Range(-scatter, scatter)
-                );
+            if (Time.time >= timeToFire)
+            {
+                timeToFire = Time.time + 1 / fireRate;
+                m_object = Instantiate(m_Prefab, listShells);
+                m_object.transform.position = transform.position;
+                m_Rigidbody = m_object.GetComponent<Rigidbody>();
+                Vector3 bulletVector = Quaternion.Euler(shiftToCamera, crossFactor, 0f) * Camera.main.transform.forward * fireBulletSpeed;
+                m_Rigidbody.AddForce(bulletVector);
+                mazzleParticle.Play();
+                sprayParticle.Play();
+                Destroy(m_object, bulletLifeTime);
+            }
+        }
+        public void EndAttack()
+        {
+            heatRemovalParticle.Play();
         }
     }
 }

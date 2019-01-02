@@ -51,7 +51,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normals:
-        m_Texture: {fileID: 2800000, guid: 8b427ed48925def40a96f1509d93c478, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2f18c5b58abd438429e3d5619753674a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -63,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AtmosFalloff: 2.39
+    - _AtmosFalloff: 1.58
     - _BumpScale: 1
     - _CameraHeight: 0
     - _CameraHeight2: 0
@@ -104,8 +104,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _AtmoColor: {r: 0.5, g: 0.5, b: 1, a: 1}
-    - _AtmosFar: {r: 0.3066038, g: 0.3807981, b: 1, a: 1}
-    - _AtmosNear: {r: 0, g: 0.35876274, b: 1, a: 1}
+    - _AtmosFar: {r: 0.5087665, g: 0.58161366, b: 0.9716981, a: 1}
+    - _AtmosNear: {r: 0.08940014, g: 0.22256589, b: 0.46226418, a: 1}
     - _CameraPosition: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

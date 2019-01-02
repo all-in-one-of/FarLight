@@ -15,7 +15,7 @@ public class CameraShake : MonoBehaviour {
 		tr = GetComponent<Transform>();
 	}
 
-	public static void Shake(float duration, float power)
+	public static void Shake(float duration, float power) // Убрать static для работы shake в разных местах. TO DO
 	{
 		if(percentComplete == 1) originalPos = tr.localPosition;
 		i_Mode = ShakeMode.XYZ;
@@ -24,8 +24,8 @@ public class CameraShake : MonoBehaviour {
 		i_Power = power;
 	}
 
-	public static void Shake(float duration, float power, ShakeMode mode)
-	{
+	public static void Shake(float duration, float power, ShakeMode mode) // Убрать static для работы shake в разных местах. TO DO
+    {
 		if(percentComplete == 1) originalPos = tr.localPosition;
 		i_Mode = mode;
 		elapsed = 0;
